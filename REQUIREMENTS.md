@@ -74,5 +74,5 @@ A implementar solo si el proyecto avanza:
 
 ---
 
-## Estado actual ✅
-Todos los requisitos del MVP han sido implementados y demostrados.
+## Estado actual
+Todos los requisitos del MVP han sido planteados y están listos para la implementación.

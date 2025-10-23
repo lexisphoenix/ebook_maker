@@ -39,7 +39,7 @@ VALIDO   INVALIDO
 
 ## Futuro del flujo (cuando el proyecto escale)
 
-- UI web con formularios
+- UI web con formularios o tarjetas flotantes para seleccionar.
 - Persistencia en base de datos
 - Historial de iteraciones visible al usuario
 - Autenticación y seguridad para contenido sensible

@@ -92,14 +92,14 @@ Input → Generar → Validar
 
 ## Estado del Proyecto
 
-### ✅ Completado: Diseño y Planificación
+### Completado: Diseño y Planificación
 
 - Arquitectura definida
 - Flujo de trabajo diseñado
 - Criterios de validación especificados
 - Documentación técnica completa
 
-### 🔨 Pendiente: Implementación del Código
+### Pendiente: Implementación del Código
 
 El MVP está **diseñado** pero **no implementado aún**.  
 Incluirá:

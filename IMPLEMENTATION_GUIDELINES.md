@@ -79,10 +79,3 @@ Aplicable cuando el tráfico crezca:
 - Métricas de generación y validación para mejoras
 
 > Optimizar **después** de validar el negocio.
-
----
-
-## Conclusión
-
-Estas guías **no son parte del MVP**  
-pero garantizan que SAGI evolucionará a una plataforma sólida, mantenible y segura.
