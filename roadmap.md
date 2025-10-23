@@ -1,56 +1,81 @@
-Fases de Implementación
-Sprint 1 (Semana 1): Foundation
+# ROADMAP.md
+Roadmap de Desarrollo — SAGI MVP
 
-* Setup Next.js 14 con TypeScript
-* Conexión a Clerk (autenticación)
-* Schema Prisma básico (stories, story_iterations)
-* Deploy esqueleto en Vercel
+Este roadmap refleja cómo evolucionará SAGI desde un **prototipo local** hasta un producto escalable.  
+El enfoque es **entregar valor completo por fases (flujo funcional)**.
 
-Objetivo: Que la CI/CD esté lista. Que podamos deployar cambios sin fricción.
-Sprint 2 (Semana 1-2): Generación
+---
 
-* Integración OpenAI SDK
-* StoryGenerationService
-* Endpoint /api/stories/generate (POST)
-* Test unitarios para generador
+## ✅ Fase 1 — MVP Funcional (estado: completado)
 
-Objetivo: Poder llamar a OpenAI desde el backend de forma segura.
-Sprint 3 (Semana 2): Validación
+Objetivo: **Demostrar viabilidad del proceso automatizado**
 
-* StoryValidationService (análisis de texto)
-* Tests unitarios: validar longitud, estructura, personajes
-* Endpoint /api/stories/validate (POST)
+Alcance:
+- Entrada de parámetros por consola
+- Generación mediante OpenAI
+- Validación automática
+- Iteración con hasta 3 intentos
+- Registro de trazas en log local
+- Exportación a PDF opcional
+- Documentación completa
 
-Objetivo: Que los criterios de validación sean robustos y bien testeados.
-Sprint 4 (Semana 2-3): Iteración
+Resultado esperado:
+> El proceso editorial automatizado **funciona** de principio a fin.
 
-* StoryIteratorService
-* Loop de reintento con ajustes de prompt
-* TraceLogger service
-* Persistencia de iteraciones en BD
+---
 
-Objetivo: Que el sistema pueda automatizar el ciclo de mejora.
-Sprint 5 (Semana 3): UI
+## ▶️ Fase 2 — Interfaz Mínima Web
 
-* Formulario de entrada (Next.js form + React hooks)
-* Dashboard de historias
-* Panel de detalles con trazas
-* Buttons: Regenerar, Editar, Copiar
+Objetivo:
+Permitir que usuarios no técnicos generen historias fácilmente.
 
-Objetivo: Interfaz usable para el MVP.
-Sprint 6 (Semana 3-4): Testing & Polish
+Alcance próximo:
+- Formulario web simple
+- Mostrar resultado y trazas
+- Descargar PDF
 
-* Tests de integración (forma → generación → validación)
-* Error handling y edge cases
-* Performance tunning
-* Documentación de API
+---
 
-Objetivo: Que el sistema sea robusto y listo para producción.
-Sprint 7 (Semana 4): Deployment
+## ▶️ Fase 3 — Persistencia
 
-* Setup Vercel con variables de entorno
-* Tests en staging
-* Rollout a producción
-* Monitoreo con Sentry
+Objetivo:
+Guardar historias para acceder a ellas más tarde.
 
-Objetivo: SAGI en vivo.
+Alcance:
+- Base de datos para historias e iteraciones
+- Historial visible por usuario
+
+---
+
+## ▶️ Fase 4 — Evaluación Editorial
+
+Objetivo:
+Ajustar calidad narrativa al nivel profesional.
+
+Alcance:
+- Reglas avanzadas de validación
+- Panel de ediciones manuales
+
+---
+
+## ▶️ Fase 5 — Producción y Escalado
+
+Objetivo:
+Publicar y observar uso real.
+
+Alcance:
+- Despliegue
+- Observabilidad
+- Hardening de seguridad
+
+---
+
+## Filosofía de desarrollo
+
+- Hacer **lo mínimo** para validez
+- Entregar **un flujo completo por fase**
+- Decisiones basadas en **valor** y no en “feature creep”
+
+---
+
+> SAGI avanza de prototipo a producto sin perder foco en lo esencial.
