@@ -1,49 +1,46 @@
-### Flujo de Datos
+# FLOWCHART.md
+Flujo del MVP — SAGI
 
-El usuario llena el formulario con tema, protagonista, etc. En cliente se valida con Zod. Si pasa, envía POST a `/api/stories/generate` con esos datos. La ruta API autentica al usuario (obtiene el ID del JWT de Clerk). Luego llama `StoryIteratorService.iterate()`.
+Este diagrama representa el flujo implementado en el MVP actual.  
+Todo ocurre **localmente** y sin servicios externos adicionales a OpenAI.
 
-El iterator es el orquestador. Para cada intento (1-3): primero llama `StoryGenerationService.generate()` que habla con OpenAI y obtiene el relato crudo. Luego `StoryValidationService.validate()` que analiza si cumple criterios. `TraceLoggerService.log()` guarda qué pasó. ¿Pasó validación? Si sí, retorna resultado. Si no, reintenenta con prompt ajustado.
+```
+INPUT USUARIO
+(Tema, tono, personajes mínimos)
+        |
+        v
+GENERACIÓN IA
+- Llamada a OpenAI
+- Primer borrador de historia
+        |
+        v
+VALIDACIÓN
+- Conteo de palabras
+- Detección mínima de estructura
+- ≥3 personajes
+        |
+   +----+----+
+   |         |
+   v         v
+VALIDO   INVALIDO
+   |         |
+   |         +--> Registrar trazas (log local)
+   |         +--> Ajustar prompt
+   |         +--> Reintentar (máx. 3)
+   |
+   +--> RESULTADO FINAL
+        - Mostrar en consola
+        - Exportar PDF (opcional)
+```
 
-Una vez que pasa validación, `StoryRepository.create()` guarda la historia final en BD. La API retorna JSON: `{ success: true, data: { id, content, wordCount, etc } }`. El frontend muestra el resultado.
+> El valor no está en generar, sino en **garantizar estándares de calidad mínimos**.
 
-┌─────────────────────────────────────────────────────────┐
-│                    PRESENTATION LAYER                   │
-│  (Next.js Pages + React Components + Forms)             │
-│  - pages/stories/new                                    │
-│  - pages/stories/[id]                                   │
-│  - components/StoryForm.tsx                             │
-│  - components/StoryViewer.tsx                           │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                     API LAYER                           │
-│  (Next.js API Routes - Endpoints)                       │
-│  - api/stories/generate (POST)                          │
-│  - api/stories/[id] (GET)                               │
-│  - api/stories/list (GET)                               │
-│  - api/health (GET)                                     │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                   SERVICE LAYER                         │
-│  (Business Logic - Independiente de framework)          │
-│  - services/StoryGenerationService.ts                   │
-│  - services/StoryValidationService.ts                   │
-│  - services/StoryIteratorService.ts                     │
-│  - services/TraceLoggerService.ts                       │
-│  - services/ExportService.ts                            │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                 REPOSITORY LAYER                        │
-│  (Data Access - Abstracción sobre DB)                   │
-│  - repositories/StoryRepository.ts                      │
-│  - repositories/IterationRepository.ts                  │
-└────────────────────┬────────────────────────────────────┘
-                     │
-┌────────────────────▼────────────────────────────────────┐
-│                  PERSISTENCE LAYER                      │
-│  (Database - PostgreSQL via Prisma)                     │
-│  - Prisma ORM                                           │
-│  - Database Schema (stories, iterations)                │
-└─────────────────────────────────────────────────────────┘
+---
+
+## Futuro del flujo (cuando el proyecto escale)
+
+- UI web con formularios
+- Persistencia en base de datos
+- Historial de iteraciones visible al usuario
+- Autenticación y seguridad para contenido sensible
+- Exportación avanzada con portada

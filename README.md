@@ -1,160 +1,134 @@
-# SAGI - Sistema Automatizado de Generación Infantil
+# SAGI — Sistema Automatizado de Generación Infantil  
+**Prototipo de Generador Automático de Relatos Infantiles**
 
 ## Introducción
 
-**SAGI** es una plataforma que genera relatos infantiles usando inteligencia artificial. El usuario proporciona tema, protagonista, número mínimo de personajes y tono, y el sistema genera una historia validada automáticamente. Si falla la validación, reintenta hasta 3 veces con ajustes inteligentes.
+Crear un cuento infantil breve y de calidad puede llevar entre 8 y 12 horas:  
+redacción, revisión narrativa, corrección, maquetación…
 
-### Stack Técnico
+**SAGI** automatiza la parte repetitiva del proceso:  
+El usuario define **tema, tono y personajes mínimos**, y el sistema genera una historia que **se valida sola**.  
+Si no cumple los criterios, **reintenta hasta 3 veces** con ajustes automáticos.
 
-Construido con: **React + Next.js + TypeScript + OpenAI + Prisma + PostgreSQL**
-
-Los datos fluyen desde el componente React → API → Servicios de lógica → Repositorios → Base de datos.
-
-### Características Clave
-
-- **Arquitectura en capas** independientes que se testean por separado
-- **Código seguro**: TypeScript + validación server-side
-- **Optimizado**: Queries eficientes en BD y uso inteligente de OpenAI
-- **Transparente**: Trazas de cada intento registradas
+Este prototipo demuestra que **la generación editorial automatizada es viable** y escalable.
 
 ---
 
-## Las Tres Fases: El Flujo Central
+## Stack Técnico del MVP
 
-### Fase 1: Entrada de Datos
+Este MVP se ejecuta **localmente** y utiliza solo lo necesario para comprobar la idea:
 
-El usuario quiere crear una historia. Puede llegar de una de tres formas:
+| Componente | Elección | Razón |
+|----------|----------|------|
+| Lenguaje | TypeScript o Python | Rápido para prototipar |
+| IA | OpenAI API (GPT-4 Turbo u equivalente) | Calidad inicial del texto |
+| Validación | Reglas internas simples | Control y transparencia |
+| Iteraciones | Script automatizado | Asegurar criterios de calidad |
+| Trazas | Consola + archivo local | Auditoría mínima |
+| PDF (opcional) | pdf-lib / reportlab | Valor añadido |
 
-1. **Formulario web**: Rellena tema, protagonista, número de personajes, etc.
-2. **Archivo** (futuro): Sube un documento Markdown con la entrada
-3. **API** (futuro): Un script externo llama a nuestro endpoint con JSON
+> Sin interfaz gráfica, sin autenticación y sin base de datos,  
+> porque en esta fase **no aportan valor al objetivo del reto**.
 
-Para el **MVP**, es solo el formulario. Simple, limpio, directo.
+---
 
-#### Parámetros Capturados
+## Flujo del Proceso
 
-- Tema o género
+```
+Entrada → Generación IA → Validación → Iteración → Resultado Final
+```
+
+---
+
+## Fase 1: Entrada
+
+Variables definidas por usuario:
+- Tema / género
 - Protagonista(s)
-- Número mínimo de personajes
-- Preferencias de tono (aventurero, misterioso, cómico)
-- Duración aproximada (default: ~500 palabras)
-
-Se almacena en base de datos. Cada intento de generación es un registro. Cada iteración es un campo más. Así el usuario después puede ver el "antes y después".
+- Número mínimo de personajes (≥3)
+- Duración aproximada (500 palabras)
 
 ---
 
-### Fase 2: Validación
+## Fase 2: Validación Automática
 
-Aquí es donde la magia ocurre.
+Se aplican estos criterios:
 
-Cuando el relato sale de OpenAI, no lo damos por bueno inmediatamente. Lo analizamos contra tres criterios:
+| Criterio | Comprobación |
+|--------|--------------|
+| Longitud | 500 palabras ±10% |
+| Estructura | 3 actos detectables por párrafos |
+| Personajes | ≥3 nombres propios |
 
-#### Criterio 1: Longitud (~500 palabras, ±10%)
-
-Es matemático. Contar palabras. Si es 480 o 520, perfecto. Si es 300, rechazar.
-
-#### Criterio 2: Estructura en 3 actos
-
-Este es más delicado. No es perfectamente automatizable, pero usamos heurísticas:
-
-- ¿Hay al menos 2 párrafos separados? (pausa narrativa)
-- ¿El último párrafo cierra la historia? (desenlace)
-- ¿Hay un conflicto evidente en el medio?
-
-No es ciencia exacta, pero funciona el 85% de las veces.
-
-#### Criterio 3: Al menos 3 personajes
-
-Buscar nombres propios. Extraer entidades nombradas. Contar.
-
-**Resultado**: Si todo pasa, retornamos `valid: true`. Si algo falla, retornamos exactamente qué falló y por qué.
+El sistema devuelve:
+- `valid: true` cuando todo cumple
+- Si falla: `valid: false` + lista de errores específicos
 
 ---
 
-### Fase 3: Iteración y Trazas
+## Fase 3: Iteración y Trazas
 
-Si la validación falla, no nos rendimos.
+Hasta **3 intentos**:
 
-Aquí entra la orquestación: **reintentamos hasta 3 veces**. En cada intento, ajustamos el prompt:
+- Ajuste de prompt según motivos de fallo
+- Registro de cada paso y resultado
+- Transparencia total del proceso
 
-- **Si falló la longitud**: "Genera una historia de exactamente 500 palabras"
-- **Si falló la estructura**: "Asegúrate de contar en tres actos claramente separados"
-- **Si falló personajes**: "Incluye exactamente estos personajes: X, Y, Z"
-
-Cada intento queda registrado. Cada prompt refinado queda anotado. Así el usuario (y nosotros) vemos exactamente qué pasó:
-- Por qué se rechazó la versión 1
-- Por qué la versión 2 fue mejor
-- Por qué finalmente la 3 pasó todos los criterios
-
-**Esto es crucial**: Las trazas no son solo para debugging. Son educación. Son transparencia.
+> El valor no es solo generar, sino **garantizar estándares narrativos mínimos**.
 
 ---
 
-## El Flujo: Visualizado de Manera Simple
+## Diagrama Simplificado del MVP
 
 ```
-USUARIO INICIA GENERACION
-         |
-         v
-    FORMULARIO (Fase 1)
-    - Tema: "Dragon"
-    - Protagonista: "Sofia"
-    - Personajes: 3 minimo
-         |
-         v
-  GUARDAMOS EN BD
-  status: "pending"
-  iteration: 1
-         |
-         v
- LLAMAMOS OPENAI (Fase 2)
- - Enviamos prompt + contexto
- - Recibimos relato
-         |
-         v
- VALIDAMOS RELATO (Fase 2)
- - Contamos palabras
- - Buscamos estructura
- - Extraemos personajes
-         |
-    +----+----+
-    |         |
-    v         v
- VALIDO   INVALIDO
-    |         |
-    |         +---> GUARDAMOS RECHAZO EN TRACE
-    |         |     "Longitud: 350 (< 450 minimo)"
-    |         |
-    |         +---> REINTENTAMOS (Fase 3)
-    |         |     iteration: 2
-    |         |     prompt_adjusted: true
-    |         |
-    |         +---> VOLVEMOS A VALIDAR
-    |         |     (loop hasta 3 intentos)
-    |         |
-    |         +---> SI SIGUE INVALIDO TRAS 3 INTENTOS
-    |               Retornamos error a usuario
-    |               Guardamos todos los intentos
-    |
-    +--------> GUARDAMOS RELATO FINAL EN BD
-              status: "completed"
-              iterations: 2
-              created_at: timestamp
-              validated_at: timestamp
-              trace: [log1, log2, ...]
-              |
-              v
-        USUARIO RECIBE RESULTADO
-        - Relato limpio
-        - Botones: Descargar PDF, Regenerar, Editar
-        - Sidebar: Ver todas las iteraciones
+Input → Generar → Validar
+                ↓ valido?
+              Sí → Mostrar resultado / Exportar PDF*
+              No → Ajustar → Reintentar (máx. 3)
+                                 *PDF opcional
 ```
-
-**Este flujo es el corazón del sistema. Todo lo demás son detalles.**
 
 ---
 
-Este prototipo se ha centrado únicamente en el ciclo de generación y validación para demostrar viabilidad.
-No requiere stack de autenticación, UI o state management en esta fase.
+## Estado del Prototipo
 
-Si el proyecto continuara, las decisiones técnicas se diseñarían para mantener simplicidad en MVP y escalabilidad futura.
+Este MVP prueba **lo esencial**:
+
+✅ Genera  
+✅ Valida  
+✅ Itera con trazas  
+✅ Exporta PDF (opcional)
+
+Con esto queda demostrado que la automatización editorial es posible.
+
+---
+
+## Futuro del Proyecto (si avanza)
+
+- Interfaz web para edición, revisión y descarga
+- Base de datos con historial de iteraciones
+- Generación de portadas temáticas
+- Versionado y colaboración en tiempo real
+
+> SAGI no sustituye la imaginación.  
+> La acelera y la hace accesible.
+
+---
+
+## Cómo Ejecutarlo
+
+```bash
+npm install
+npm start
+```
+
+o en Python:
+
+```bash
+python main.py
+```
+
+---
+
+**Contacto técnico:**  
+Disponible en este repositorio o en documentación interna del proyecto.
