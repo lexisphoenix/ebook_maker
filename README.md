@@ -154,24 +154,7 @@ USUARIO INICIA GENERACION
 
 ---
 
-## Decisiones de Diseño Justificadas
+Este prototipo se ha centrado únicamente en el ciclo de generación y validación para demostrar viabilidad.
+No requiere stack de autenticación, UI o state management en esta fase.
 
-### ¿Por qué Repository Pattern?
-
-Aisla lógica de BD de servicios. Si mañana cambio de Prisma a una API, solo modifico repositories. Servicios no saben que existe BD.
-
-### ¿Por qué Clerk y no JWT propio?
-
-Auth es complejo. Clerk maneja MFA, OAuth, rate limiting por usuario, etc. Código más seguro, menos bugs.
-
-### ¿Por qué Zustand en lugar de Redux/Context?
-
-Redux es overkill. Context causa re-renders innecesarios. Zustand es minimalista, perfecto para este scope.
-
-### ¿Por qué Zod en cliente y servidor?
-
-Validar en cliente es UX. Validar en servidor es seguridad. Zod es 1 definición, ambos lugares. DRY principle.
-
-### ¿Por qué no usar GraphQL?
-
-REST es más simple para MVP. GraphQL agrega complejidad sin retorno en 5 endpoints.
+Si el proyecto continuara, las decisiones técnicas se diseñarían para mantener simplicidad en MVP y escalabilidad futura.
