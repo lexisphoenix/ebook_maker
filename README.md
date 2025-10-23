@@ -20,7 +20,7 @@ Este MVP se ejecuta **localmente** y utiliza solo lo necesario para comprobar la
 
 | Componente | Elección | Razón |
 |----------|----------|------|
-| Lenguaje | TypeScript o Python | Rápido para prototipar |
+| Lenguaje | TypeScript | Rápido para prototipar |
 | IA | OpenAI API (GPT-4 Turbo u equivalente) | Calidad inicial del texto |
 | Validación | Reglas internas simples | Control y transparencia |
 | Iteraciones | Script automatizado | Asegurar criterios de calidad |
@@ -90,16 +90,27 @@ Input → Generar → Validar
 
 ---
 
-## Estado del Prototipo
+## Estado del Proyecto
 
-Este MVP prueba **lo esencial**:
+### ✅ Completado: Diseño y Planificación
 
-✅ Genera  
-✅ Valida  
-✅ Itera con trazas  
-✅ Exporta PDF (opcional)
+- Arquitectura definida
+- Flujo de trabajo diseñado
+- Criterios de validación especificados
+- Documentación técnica completa
 
-Con esto queda demostrado que la automatización editorial es posible.
+### 🔨 Pendiente: Implementación del Código
+
+El MVP está **diseñado** pero **no implementado aún**.  
+Incluirá:
+
+- Generación con IA
+- Validación automática
+- Sistema de iteraciones con trazas
+- Exportación a PDF (opcional)
+
+> Este proyecto demuestra que la automatización editorial es **viable conceptualmente**.  
+> El siguiente paso es implementar el código.
 
 ---
 
@@ -115,7 +126,9 @@ Con esto queda demostrado que la automatización editorial es posible.
 
 ---
 
-## Cómo Ejecutarlo
+## Próximos Pasos
+
+Una vez implementado, el proyecto se ejecutará con:
 
 ```bash
 npm install
@@ -127,6 +140,8 @@ o en Python:
 ```bash
 python main.py
 ```
+
+**Nota:** El código aún no está implementado. Esta sección muestra cómo será la ejecución futura.
 
 ---
 

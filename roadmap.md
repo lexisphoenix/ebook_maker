@@ -6,21 +6,21 @@ El enfoque es **entregar valor completo por fases (flujo funcional)**.
 
 ---
 
-## ✅ Fase 1 — MVP Funcional (estado: completado)
+## 📋 Fase 1 — MVP Funcional (estado: **diseñado, pendiente de implementar**)
 
 Objetivo: **Demostrar viabilidad del proceso automatizado**
 
-Alcance:
+Alcance planificado:
 - Entrada de parámetros por consola
 - Generación mediante OpenAI
 - Validación automática
 - Iteración con hasta 3 intentos
 - Registro de trazas en log local
 - Exportación a PDF opcional
-- Documentación completa
+- ✅ Documentación completa (esta sí está lista)
 
-Resultado esperado:
-> El proceso editorial automatizado **funciona** de principio a fin.
+Resultado esperado al implementar:
+> El proceso editorial automatizado **funcionará** de principio a fin.
 
 ---
 
