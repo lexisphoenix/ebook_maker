@@ -131,4 +131,7 @@ python main.py
 ---
 
 **Contacto técnico:**  
-Disponible en este repositorio o en documentación interna del proyecto.
+idealex21@gmail.com
+629 614 689
+anieto-m
+https://github.com/lexisphoenix/ebook_maker
